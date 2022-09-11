@@ -28,16 +28,24 @@ btnDate.addEventListener("click", (e) => {
       return alert("data invalida");
     } else {
       const anos = Math.floor(totalSegundos / 3600 / 365 / 24);
-      const meses = Math.floor(totalSegundos / 3600 / 30 / 24);
-      const dias = Math.floor(totalSegundos / 3600 / 24);
+      const anosCalcMes = anos * 12
+      const anosCalcDia = anos * 365
+
+      const meses = Math.floor(totalSegundos / 3600 / 30 / 24 - anosCalcMes);
+      const mesesCalc = meses * 30.41
+
+      const dias = Math.floor(totalSegundos / 3600 / 24 - anosCalcDia - mesesCalc);
+      const diasCalc = dias * 24
+
       const horas = Math.floor(totalSegundos / 3600) % 24;
+
       const minutos = Math.floor(totalSegundos / 60) % 60;
+
       const segundos = Math.floor(totalSegundos) % 60;
 
 
-
-      anosText.innerHTML = anos;
-      mesesText.innerHTML = meses;
+      anosText.innerHTML = formatarTempo(anos);
+      mesesText.innerHTML = formatarTempo(meses);
       diasText.innerHTML = formatarTempo(dias);
       horasText.innerHTML = formatarTempo(horas);
       minutosText.innerHTML = formatarTempo(minutos);
@@ -46,7 +54,14 @@ btnDate.addEventListener("click", (e) => {
   }
 
   function formatarTempo(tempo) {
-    return tempo < 10 ? `0${tempo}` : tempo;
+
+    if(tempo < 0) {
+      return '00'
+    } else if(tempo < 10) {
+      return `0${tempo}`
+    } else {
+      return tempo
+    }
   }
   
   setInterval(contador, 1000);
